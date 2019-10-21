@@ -1,42 +1,110 @@
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
 import React from "react"
+import Scrollspy from "react-scrollspy"
+import { Navbar, Nav } from "react-bootstrap"
+import Scroller from "./scroller"
+//import { graphql, useStaticQuery } from "gatsby"
+//import Img from "gatsby-image"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
+export default class Header extends React.Component {
+  constructor(props) {
+    super(props)
+    Scroller.handleAnchorScroll = Scroller.handleAnchorScroll.bind(this)
+  }
+
+  render() {
+    return (
+      <>
+        <Navbar
+          className="navbar navbar-expand-lg navbar-light fixed-top py-3"
+          id="mainNav"
+          expand="lg"
+          collapseOnSelect={true}
         >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </header>
-)
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
+          <div className="container">
+            <a
+              className="navbar-brand js-scroll-trigger"
+              href="#page-top"
+              onClick={Scroller.handleAnchorScroll}
+            >
+              Conspac Enterprises
+            </a>
+            <Navbar.Toggle aria-controls="navbarResponsive" />
+            <Navbar.Collapse id="navbarResponsive">
+              <Nav className="navbar-nav ml-auto my-2 my-lg-0">
+                <Scrollspy
+                  className="navbar-nav"
+                  items={["features", "about", "products", "contact"]}
+                  currentClassName="active"
+                  rootEl={"#mainNav"}
+                  offset={-75}
+                >
+                  <li className="nav-item">
+                    <Nav.Link
+                      className={"js-scroll-trigger"}
+                      href="#features"
+                      onClick={Scroller.handleAnchorScroll}
+                    >
+                      Features
+                    </Nav.Link>
+                  </li>
+                  <li className="nav-item">
+                    <Nav.Link
+                      className={"js-scroll-trigger"}
+                      href="#about"
+                      onClick={Scroller.handleAnchorScroll}
+                    >
+                      About
+                    </Nav.Link>
+                  </li>
+                  <li className="nav-item">
+                    <Nav.Link
+                      className={"js-scroll-trigger"}
+                      href="#products"
+                      onClick={Scroller.handleAnchorScroll}
+                    >
+                      Products
+                    </Nav.Link>
+                  </li>
+                  <li className="nav-item">
+                    <Nav.Link
+                      className={"js-scroll-trigger"}
+                      href="#contact"
+                      onClick={Scroller.handleAnchorScroll}
+                    >
+                      Contact
+                    </Nav.Link>
+                  </li>
+                </Scrollspy>
+              </Nav>
+            </Navbar.Collapse>
+          </div>
+        </Navbar>
+        <header className="masthead">
+          <div className="container h-100">
+            <div className="row h-100 align-items-center justify-content-center text-center">
+              <div className="col-lg-10 align-self-end">
+                <h1 className="text-uppercase text-white font-weight-bold">
+                  Conspac Enterprises Ltd
+                </h1>
+                <hr className="divider my-4" />
+              </div>
+              <div className="col-lg-8 align-self-baseline">
+                <p className="text-white-75 font-weight-light mb-5">
+                  We sell unique food and nutritional supplements for humans and
+                  powerful ingredients for fish and animal feed.
+                </p>
+                <a
+                  className="btn btn-primary btn-xl js-scroll-trigger"
+                  href="#products"
+                  onClick={Scroller.handleAnchorScroll}
+                >
+                  Find Out More
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+      </>
+    )
+  }
 }
-
-Header.defaultProps = {
-  siteTitle: ``,
-}
-
-export default Header

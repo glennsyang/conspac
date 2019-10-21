@@ -7,46 +7,73 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
-
 import Header from "./header"
-import "./layout.css"
+import "./layout.scss"
 
-const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
-
+const getScrollNode = element => {
   return (
-    <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0px 1.0875rem 1.45rem`,
-          paddingTop: 0,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
+    element.ownerDocument.scrollingElement ||
+    element.ownerDocument.documentElement
+  )
+}
+
+const isScrolled = element => {
+  const scrollNode = getScrollNode(element)
+  return scrollNode.scrollTop > 0
+}
+
+export default class Layout extends React.Component {
+  constructor(props) {
+    super(props)
+    this.siteContainer = React.createRef()
+    this.state = {
+      scrolled: false,
+    }
+    this.handleScroll = this.handleScroll.bind(this)
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll)
+    const element = this.siteContainer.current
+    this.setState({
+      scrolled: isScrolled(element),
+    })
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll)
+  }
+
+  handleScroll() {
+    const element = this.siteContainer.current
+    this.setState({
+      scrolled: isScrolled(element),
+    })
+  }
+
+  render() {
+    let className = "site-container"
+    if (this.props.className) className += ` ${this.props.className}`
+    if (this.state.scrolled) className += " navbar-scrolled"
+
+    return (
+      <div className={className} ref={this.siteContainer} id="page-top">
+        <Header />
+        <main>{this.props.children}</main>
+        <footer className="bg-dark py-4">
+          <div className="container">
+            <div className="small text-center text-white-50">
+              Copyright &copy; {new Date().getFullYear()} - Conspac Enterprises
+              Ltd.
+            </div>
+          </div>
         </footer>
       </div>
-    </>
-  )
+    )
+  }
 }
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 }
-
-export default Layout
