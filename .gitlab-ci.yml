@@ -34,7 +34,7 @@ deployGatsby:
     - echo "========================="
     - echo -n "$SSH_PRIVATE_KEY" | tr -d '\r' | base64 -d
     - echo "========================="
-    - echo -n "$SSH_PRIVATE_KEY" | tr -d '\r' | base64 --decode | ssh-add - > /dev/null
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | base64 --decode | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     # set known hosts
