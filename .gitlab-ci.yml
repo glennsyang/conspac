@@ -32,9 +32,9 @@ deployGatsby:
     - eval $(ssh-agent -s)
     # set ssh private key
     - echo "========================="
-    - echo "$SSH_PRIVATE_KEY" | base64 -d
+    - echo -n "$SSH_PRIVATE_KEY" | tr -d '\r' | base64 -d
     - echo "========================="
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | base64 --decode | ssh-add - > /dev/null
+    - echo -n "$SSH_PRIVATE_KEY" | tr -d '\r' | base64 --decode | ssh-add - > /dev/null
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     # set known hosts
